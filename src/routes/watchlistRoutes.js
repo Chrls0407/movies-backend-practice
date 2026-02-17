@@ -7,7 +7,10 @@ import {
 } from "../controllers/watchlistController.js";
 import { authMiddleware } from "../middleware/authMiddleware.js";
 import { validateRequestMiddleware } from "../middleware/validateRequestMiddleware.js";
-import { addToWatchlistSchema } from "../validators/watchlistValidators.js";
+import {
+  addToWatchlistSchema,
+  updateWatchlistSchema,
+} from "../validators/watchlistValidators.js";
 
 const router = express.Router();
 
@@ -18,7 +21,11 @@ router.post(
   validateRequestMiddleware(addToWatchlistSchema),
   addToWatchlist,
 );
-router.put("/:id", updateWatchlistItem); // For updating status, rating, notes
+router.put(
+  "/:id",
+  validateRequestMiddleware(updateWatchlistSchema),
+  updateWatchlistItem,
+); // For updating status, rating, notes
 router.delete("/:id", deleteFromWatchlist);
 router.get("/", getAllWatchlistItems); // Optional: Get all watchlist items for the authenticated user
 
